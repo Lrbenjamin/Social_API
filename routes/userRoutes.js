@@ -23,6 +23,26 @@ router.post('/', async (req, res) => {
   }
 });
 
+// POST to add a new friend to a user's friend list
+router.post('/:userId/friends/:friendId', async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.userId,
+      { $addToSet: { friends: req.params.friendId } }, // Add to friends array without duplicates
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'No user found with this ID!' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+
 // PUT to update a user by ID
 router.put('/:userId', async (req, res) => {
   try {
@@ -65,6 +85,25 @@ router.delete('/:userId', async (req, res) => {
     await Thought.deleteMany({ _id: { $in: user.thoughts } });
     await user.remove();
     res.json({ message: 'User and associated thoughts deleted successfully!' });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// DELETE to remove a friend from a user's friend list
+router.delete('/:userId/friends/:friendId', async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.userId,
+      { $pull: { friends: req.params.friendId } }, // Remove from friends array
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'No user found with this ID!' });
+    }
+
+    res.json(user);
   } catch (error) {
     res.status(500).json(error);
   }

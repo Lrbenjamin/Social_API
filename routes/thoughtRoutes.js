@@ -58,9 +58,9 @@ router.post('/', async (req, res) => {
 
 router.delete('/:thoughtId', async (req, res) => {
   try {
-    const thought = await Thought.findByIdAndDelete(req.params.thoughtId);
-    if (!thought) {
-      return res.status(404).json({ message: 'No thought found with this id!' });
+    const deletedThought = await Thought.findByIdAndDelete(req.params.thoughtId);
+    if (!deletedThought) {
+      return res.status(404).json({ message: 'No thought found with this ID!' });
     }
     res.json({ message: 'Thought deleted successfully!' });
   } catch (error) {
