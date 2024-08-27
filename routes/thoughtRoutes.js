@@ -25,6 +25,24 @@ router.get('/:thoughtId', async (req, res) => {
   }
 });
 
+// PUT to update a thought by ID
+router.put('/:thoughtId', async (req, res) => {
+  try {
+    const updatedThought = await Thought.findByIdAndUpdate(
+      req.params.thoughtId,
+      { $set: req.body },
+      { new: true, runValidators: true } // Options to return the updated document and run validators
+    );
+
+    if (!updatedThought) {
+      return res.status(404).json({ message: 'No thought found with this ID!' });
+    }
+
+    res.json(updatedThought);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 router.post('/', async (req, res) => {
   try {
