@@ -21,7 +21,7 @@ To install and set up this project on your local machine:
 
 ``bash
 1. Clone the repository:
-   git clone https://github.com/yourusername/Social_Network_API.git
+   git clone https://github.com/Lrbenjamin/Social_API.git
 
 2. Navigate to the project directory:
    cd Social_Network_API
